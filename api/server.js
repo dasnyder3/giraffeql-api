@@ -1,9 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-require('./db/mongoose');
+const { typeDefs } = require('./graphql/typeDefs');
+const { resolvers } = require('./graphql/resolvers');
+const User = require('./db/models/user');
+const Database = require('./db/models/database')
+const { ApolloServer } = require('apollo-server-express');
+const realmApp = new Realm.App({ id: "giraffeql-uzcoz" });
 
 const app = express();
+
+// configure apollo server and pass in database connection
+// const server = new ApolloServer({
+//   typeDefs,
+//   resolvers,
+//   context: {
+//     db: { User, Database }
+//   }
+// });
 
 // Parse json encoded in the request body
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -26,6 +40,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/user', require('./routes/user'));
 app.use('/profile', require('./routes/profile'));
 
+
 // global error handler --->
 app.use((err, req, res, next) => {
   const defaultErr = {
@@ -37,6 +52,10 @@ app.use((err, req, res, next) => {
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
+
+// link apollo server to our express API
+// apollo server will be available at /graphql
+server.applyMiddleware({ app });
 
 // start server
 app.listen(process.env.PORT || 3001, () => console.log("Server listening on http://localhost:3001"))

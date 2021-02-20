@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development node api/login.js",
-    "start": "node api/login.js"
+    "dev": "cross-env NODE_ENV=development node api/server.js",
+    "start": "node api/server.js"
   },
   "dependencies": {
+    "apollo-server": "^2.21.0",
+    "apollo-server-express": "^2.21.0",
     "body-parser": "^1.19.0",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
+    "graphql": "^15.5.0",
+    "graphql-tools": "^7.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.16",
     "passport": "^0.4.1",
